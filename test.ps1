@@ -19,8 +19,8 @@
 #
 
 param(
-	$ConnectionString = "Server=localhost;Port=5432;Userid=postgres;Password=postgres",
-	$CommandText = "SELECT VERSION()"
+	$ConnectionString = 'Server=localhost;Port=5432;Userid=postgres;Password=postgres',
+	$CommandText = 'SELECT VERSION()'
 )
 
 $ErrorActionPreference = "Stop"
@@ -29,8 +29,6 @@ trap
 {
 	throw $PSItem
 }
-
-Write-Host $Env:PSModulePath
 
 $Connection = New-NpgsqlConnection -ConnectionString $ConnectionString
 
@@ -46,10 +44,11 @@ try
 
 	try
 	{
-		while ($Reader.Read())
-		{
-			Write-Host $Reader.GetString(0)
-		}
+		$DataTable = New-Object System.Data.DataTable
+
+		$DataTable.Load($Reader)
+
+		$DataTable | Format-Table
 	}
 	finally
 	{
