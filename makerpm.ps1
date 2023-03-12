@@ -81,8 +81,6 @@ PowerShell Cmdlet for connection to PostgreSQL databases
 %dir %attr(555,root,root) /$ModulesPath/$ModuleName
 %attr(444,root,root)      /$ModulesPath/$ModuleName/$ModuleName.dll
 %attr(444,root,root)      /$ModulesPath/$ModuleName/$ModuleName.psd1
-%attr(444,root,root)      /$ModulesPath/$ModuleName/$ModuleName.pdb
-%attr(444,root,root)      /$ModulesPath/$ModuleName/$ModuleName.deps.json
 %attr(444,root,root)      /$ModulesPath/$ModuleName/Npgsql.dll
 %attr(444,root,root)      /$ModulesPath/$ModuleName/Microsoft.Extensions.Logging.Abstractions.dll
 
@@ -102,7 +100,7 @@ PowerShell Cmdlet for connection to PostgreSQL databases
 }
 finally
 {
-	foreach ($Name in "root", "rpms")
+	foreach ($Name in "root", "rpms", "rpm.spec")
 	{
 		if (Test-Path $Name)
 		{

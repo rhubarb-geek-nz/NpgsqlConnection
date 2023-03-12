@@ -26,14 +26,8 @@
   </Fragment>
   <Fragment>
     <ComponentGroup Id="ProductComponents">
-      <Component Id="CNpgsqlConnectionDepsJson" Guid="*" Directory="INSTALLDIR2" Win64="$(env.NPGSQLISWIN64)">
-        <File Id="FNpgsqlConnectionDepsJson" KeyPath="yes" Source="$(env.SOURCEDIR)\NpgsqlConnection.deps.json" />
-      </Component>
       <Component Id="CNpgsqlConnectionDll" Guid="*" Directory="INSTALLDIR2" Win64="$(env.NPGSQLISWIN64)">
         <File Id="FNpgsqlConnectionDll" KeyPath="yes" Source="$(env.SOURCEDIR)\NpgsqlConnection.dll" />
-      </Component>
-      <Component Id="CNpgsqlConnectionPdb" Guid="*" Directory="INSTALLDIR2" Win64="$(env.NPGSQLISWIN64)">
-        <File Id="FNpgsqlConnectionPdb" KeyPath="yes" Source="$(env.SOURCEDIR)\NpgsqlConnection.pdb" />
       </Component>
       <Component Id="CNpgsqlConnectionPsd1" Guid="*" Directory="INSTALLDIR2" Win64="$(env.NPGSQLISWIN64)">
         <File Id="FNpgsqlConnectionPsd1" KeyPath="yes" Source="$(env.SOURCEDIR)\NpgsqlConnection.psd1" />
