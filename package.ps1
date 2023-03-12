@@ -21,13 +21,16 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 $BINDIR = "bin/Release/netstandard2.0/publish"
+$ModuleName = "NpgsqlConnection"
+$Version = "7.0.2"
+$ZipName = "$ModuleName-$Version.zip"
 
 trap
 {
 	throw $PSItem
 }
 
-foreach ($Name in "obj", "bin", "NpgsqlConnection", "NpgsqlConnection.zip")
+foreach ($Name in "obj", "bin", "$ModuleName", "$ZipName")
 {
 	if (Test-Path "$Name")
 	{
@@ -35,20 +38,39 @@ foreach ($Name in "obj", "bin", "NpgsqlConnection", "NpgsqlConnection.zip")
 	} 
 }
 
-dotnet publish NpgsqlConnection.csproj --configuration Release
+dotnet publish $ModuleName.csproj --configuration Release
 
 If ( $LastExitCode -ne 0 )
 {
 	Exit $LastExitCode
 }
 
-$null = New-Item -Path "NpgsqlConnection" -ItemType Directory
+$null = New-Item -Path "$ModuleName" -ItemType Directory
 
 foreach ($Filter in "Npgsql*", "Microsoft.Extensions.*")
 {
 	Get-ChildItem -Path "$BINDIR" -Filter $Filter | Foreach-Object {
-		Copy-Item -Path $_.FullName -Destination "NpgsqlConnection"
+		Copy-Item -Path $_.FullName -Destination "$ModuleName"
 	}
 }
 
-Compress-Archive -Path "NpgsqlConnection" -DestinationPath "NpgsqlConnection.zip"
+@"
+@{
+	RootModule = '$ModuleName.dll'
+	ModuleVersion = '$Version'
+	GUID = '8ed7a18c-0928-489d-88b8-e7751845c7b5'
+	Author = 'Roger Brown'
+	CompanyName = 'rhubarb-geek-nz'
+	Copyright = '(c) Roger Brown. All rights reserved.'
+	FunctionsToExport = @()
+	CmdletsToExport = @('New-$ModuleName')
+	VariablesToExport = '*'
+	AliasesToExport = @()
+	PrivateData = @{
+		PSData = @{
+		}
+	}
+}
+"@ | Set-Content -Path "$ModuleName/$ModuleName.psd1"
+
+Compress-Archive -Path "$ModuleName" -DestinationPath "$ZipName"
