@@ -26,6 +26,9 @@
   </Fragment>
   <Fragment>
     <ComponentGroup Id="ProductComponents">
+      <Component Id="CLicense" Guid="*" Directory="INSTALLDIR2" Win64="$(env.NPGSQLISWIN64)">
+        <File Id="FLicense" KeyPath="yes" Source="$(env.SOURCEDIR)\LICENSE" />
+      </Component>
       <Component Id="CNpgsqlConnectionDll" Guid="*" Directory="INSTALLDIR2" Win64="$(env.NPGSQLISWIN64)">
         <File Id="FNpgsqlConnectionDll" KeyPath="yes" Source="$(env.SOURCEDIR)\NpgsqlConnection.dll" />
       </Component>
