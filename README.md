@@ -6,6 +6,13 @@ Build using the `package.ps1` script to create the `NpgsqlConnection.zip` file.
 
 Install by unzipping into a directory on the [PSModulePath](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath)
 
+Create a test database.
+
+```
+$ docker volume create postgres-data
+$ docker run -d -v postgres-data:/var/lib/postgresql/data -p 5432:5432/tcp -e POSTGRES_PASSWORD=postgres --name postgres-container postgres
+```
+
 Run the `test.ps1` to confirm it works.
 
 ```
