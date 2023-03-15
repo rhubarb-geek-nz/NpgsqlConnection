@@ -22,11 +22,3 @@ version
 PostgreSQL 15.2 (Debian 15.2-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
 
 ```
-The following scripts can be used to make formal packages for specific RID.
-
-| Script | RID | Installation Directory |
-| ------ | --- | ---------------------- |
-| makemsi.ps1 | win | c:\Program Files\PowerShell\Modules\NpgsqlConnection |
-| makeosx.ps1 | osx | /usr/local/share/powershell/Modules/NpgsqlConnection |
-| makedeb.ps1 | linux | /opt/microsoft/powershell/7/Modules/NpgsqlConnection |
-| makerpm.ps1 | linux | /opt/microsoft/powershell/7/Modules/NpgsqlConnection |
