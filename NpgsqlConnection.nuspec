@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>rhubarb-geek-nz.NpgsqlConnection</id>
+    <version>7.0.2</version>
+    <authors>rhubarb-geek-nz</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">LGPL-3.0-or-later</license>
+    <!-- <icon>icon.png</icon> -->
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/rhubarb-geek-nz/NpgsqlConnection</projectUrl>
+    <description>PostgreSQL Connection Tool</description>
+    <releaseNotes>NuGet package for NpgsqlConnection</releaseNotes>
+    <copyright>(c) Roger Brown. All rights reserved.</copyright>
+    <tags>New-NpgsqlConnection</tags>
+  </metadata>
+  <files>
+     <file src="rhubarb-geek-nz.NpgsqlConnection/README.md" target="" />
+     <file src="rhubarb-geek-nz.NpgsqlConnection/*.dll" target="" />
+     <file src="rhubarb-geek-nz.NpgsqlConnection/*.psd1" target="" />
+  </files>
+</package>
