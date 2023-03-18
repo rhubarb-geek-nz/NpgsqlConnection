@@ -18,10 +18,16 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
-$ErrorActionPreference = "Stop"
-$ProgressPreference = "SilentlyContinue"
-$BINDIR = "bin/Release/netstandard2.0/publish"
-$ModuleName = "NpgsqlConnection"
+param(
+	$ModuleName = 'NpgsqlConnection',
+	$CompanyName = 'rhubarb-geek-nz'
+)
+
+$ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
+$BINDIR = 'bin/Release/netstandard2.0/publish'
+$compatiblePSEdition = 'Core'
+$PowerShellVersion = '7.2'
 
 trap
 {
@@ -31,8 +37,11 @@ trap
 $xmlDoc = [System.Xml.XmlDocument](Get-Content "$ModuleName.nuspec")
 
 $Version = $xmlDoc.SelectSingleNode("/package/metadata/version").FirstChild.Value
-$CompanyName = $xmlDoc.SelectSingleNode("/package/metadata/authors").FirstChild.Value
 $ModuleId = $xmlDoc.SelectSingleNode("/package/metadata/id").FirstChild.Value
+$ProjectUri = $xmlDoc.SelectSingleNode("/package/metadata/projectUrl").FirstChild.Value
+$Description = $xmlDoc.SelectSingleNode("/package/metadata/description").FirstChild.Value
+$Author = $xmlDoc.SelectSingleNode("/package/metadata/authors").FirstChild.Value
+$Copyright = $xmlDoc.SelectSingleNode("/package/metadata/copyright").FirstChild.Value
 
 foreach ($Name in "obj", "bin", "$ModuleId")
 {
@@ -66,25 +75,22 @@ foreach ($Filter in "Npgsql*", "Microsoft.Extensions.*")
 	RootModule = '$ModuleName.dll'
 	ModuleVersion = '$Version'
 	GUID = '8ed7a18c-0928-489d-88b8-e7751845c7b5'
-	Author = 'Roger Brown'
+	Author = '$Author'
 	CompanyName = '$CompanyName'
-	Copyright = '(c) Roger Brown. All rights reserved.'
+	Copyright = '$Copyright'
+	Description = '$Description'
+	PowerShellVersion = "$PowerShellVersion"
+	CompatiblePSEditions = @('$compatiblePSEdition')
 	FunctionsToExport = @()
 	CmdletsToExport = @('New-$ModuleName')
 	VariablesToExport = '*'
 	AliasesToExport = @()
 	PrivateData = @{
 		PSData = @{
+			ProjectUri = '$ProjectUri'
 		}
 	}
 }
 "@ | Set-Content -Path "$ModuleId/$ModuleId.psd1"
 
 (Get-Content "./README.md")[0..2] | Set-Content -Path "$ModuleId/README.md"
-
-nuget pack "$ModuleName.nuspec"
-
-If ( $LastExitCode -ne 0 )
-{
-	Exit $LastExitCode
-}

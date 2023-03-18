@@ -2,15 +2,14 @@
 
 Very simple `PowerShell` module for creating a connection to a `PostgreSQL` database.
 
-Build using the `package.ps1` script to create the `rhubarb-geek-nz.NpgsqlConnection.7.0.2.nupkg` file.
+Build using the `package.ps1` script to create the module.
 
-Install by unzipping into a directory on the [PSModulePath](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath)
+Install by copying into a directory on the [PSModulePath](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath)
 
 Create a test database.
 
 ```
-$ docker volume create postgres-data
-$ docker run -d -v postgres-data:/var/lib/postgresql/data -p 5432:5432/tcp -e POSTGRES_PASSWORD=postgres --name postgres-container postgres
+$ docker run -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
 Run the `test.ps1` to confirm it works.
