@@ -5,7 +5,7 @@ Very simple `PowerShell` module for creating a connection to a `PostgreSQL` data
 Build using
 
 ```
-$ dotnet public NpgsqlConnection.csproj --configuration Release
+$ dotnet publish NpgsqlConnection.csproj --configuration Release
 ```
 
 Install by copying the publish into a directory on the [PSModulePath](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath)
