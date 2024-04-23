@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>NpgsqlConnection</AssemblyName>
-    <Copyright>Copyright &#169; 2023 Roger Brown</Copyright>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <AssemblyName>RhubarbGeekNz.NpgsqlConnection</AssemblyName>
+    <Copyright>Copyright © 2024 Roger Brown</Copyright>
     <Version>7.0.6</Version>
     <AssemblyTitle>PowerShell Cmdlet for NpgsqlConnection</AssemblyTitle>
     <Product>NpgsqlConnection for PowerShell</Product>
@@ -21,10 +21,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Npgsql" Version="7.0.6" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Alc\Alc.csproj" />
   </ItemGroup>
 
   <Target Name="Sign" AfterTargets="Compile" Condition=" '$(Configuration)' == 'Release' AND '$(OS)' == 'Windows_NT' ">
@@ -32,24 +35,18 @@
         <FileToSign Include="$(IntermediateOutputPath)$(TargetFileName)" />
     </ItemGroup>
     <Message Importance="high" Text="Signing assemblies: @(FileToSign)" />
-    <SignFile
-          SigningTarget="@(FileToSign)"
-          CertificateThumbprint="$(CertificateThumbprint)"
-          TimestampUrl="http://timestamp.digicert.com"
-    />
+    <SignFile SigningTarget="@(FileToSign)" CertificateThumbprint="$(CertificateThumbprint)" TimestampUrl="http://timestamp.digicert.com" />
   </Target>
 
   <Target Name="Package" AfterTargets="Publish" Condition=" '$(Configuration)' == 'Release' ">
     <ItemGroup>
-      <FilesToDelete Include="$(PublishDir)System.*.dll" />
-      <FilesToDelete Include="$(PublishDir)Microsoft.Bcl.*.dll" />
-      <FilesToDelete Include="$(PublishDir)$(AssemblyName).deps.json" />
-      <FilesToDelete Include="$(PublishDir)$(AssemblyName).pdb" />
+      <FilesToDelete Include="$(PublishDir)*.deps.json" />
+      <FilesToDelete Include="$(PublishDir)*.pdb" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
     <Exec Command="dotnet tool restore" />
-    <Exec Command="dotnet pwsh -c &quot;Set-Variable -Name 'ErrorActionPreference' -Value 'Stop'; if ( -not ( Get-Module -ListAvailable -Name '$(Company).PowerShellDataFile' ) ) { Install-Module -Name '$(Company).PowerShellDataFile' -Repository 'PSGallery' -Force }&quot; " />
-    <Exec Command="dotnet pwsh -ExecutionPolicy Bypass -File ./package.ps1 $(AssemblyName) $(IntermediateOutputPath) $(OutDir) $(PublishDir)" />
+    <Exec Command="dotnet pwsh -NoProfile -ExecutionPolicy Bypass -c &quot;Set-Variable -Name 'ErrorActionPreference' -Value 'Stop'; if ( -not ( Get-Module -ListAvailable -Name '$(Company).PowerShellDataFile' ) ) { Install-Module -Name '$(Company).PowerShellDataFile' -Repository 'PSGallery' -Force }&quot; " />
+    <Exec Command="dotnet pwsh -NoProfile -ExecutionPolicy Bypass -File ./package.ps1 $(ProjectName) $(IntermediateOutputPath) $(OutDir) $(PublishDir) $(TargetFramework)" />
   </Target>
 
 </Project>

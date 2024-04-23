@@ -18,12 +18,21 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
-param($ProjectName,$IntermediateOutputPath,$OutDir,$PublishDir)
+param($ProjectName,$IntermediateOutputPath,$OutDir,$PublishDir,$TargetFramework)
 
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $compatiblePSEdition = 'Core'
-$PowerShellVersion = '7.3'
+$PowerShellVersion = '7.0'
+
+switch ( $TargetFramework )
+{
+	'net5.0' { $PowerShellVersion = '7.1' }
+	'net6.0' { $PowerShellVersion = '7.2' }
+	'net7.0' { $PowerShellVersion = '7.3' }
+	'net8.0' { $PowerShellVersion = '7.4' }
+	'net9.0' { $PowerShellVersion = '7.5' }
+}
 
 function Get-SingleNodeValue([System.Xml.XmlDocument]$doc,[string]$path)
 {
@@ -58,7 +67,7 @@ $moduleSettings = @{
 	PowerShellVersion = $PowerShellVersion
 	CompatiblePSEditions = @($compatiblePSEdition)
 	FunctionsToExport = @()
-	CmdletsToExport = @("New-$ProjectName")
+	CmdletsToExport = @("New-NpgsqlConnection")
 	VariablesToExport = '*'
 	AliasesToExport = @()
 	ProjectUri = $ProjectUri
@@ -68,4 +77,20 @@ New-ModuleManifest @moduleSettings
 
 Import-PowerShellDataFile -LiteralPath "$IntermediateOutputPath$ModuleId.psd1" | Export-PowerShellDataFile | Set-Content -LiteralPath "$PublishDir$ModuleId.psd1"
 
-(Get-Content "./README.md")[0..2] | Set-Content -Path "$PublishDir/README.md"
+(Get-Content "../README.md")[0..2] | Set-Content -Path "$PublishDir/README.md"
+
+$LibDir = "$($PublishDir)lib"
+
+if ( Test-Path $LibDir )
+{
+	Remove-Item -LiteralPath $LibDir -Recurse
+}
+
+$null = New-Item -Path $PublishDir -Name 'lib' -ItemType 'directory'
+
+Get-ChildItem -LiteralPath $PublishDir -Filter '*.dll' | ForEach-Object {
+	if ( $_.Name -ne  "$AssemblyName.dll" )
+	{
+		Move-Item $_.FullName $LibDir
+	}
+}
