@@ -94,3 +94,10 @@ Get-ChildItem -LiteralPath $PublishDir -Filter '*.dll' | ForEach-Object {
 		Move-Item $_.FullName $LibDir
 	}
 }
+
+$RuntimeDir = "$($PublishDir)runtimes"
+
+if ( Test-Path $RuntimeDir )
+{
+	Remove-Item -LiteralPath $RuntimeDir -Recurse
+}

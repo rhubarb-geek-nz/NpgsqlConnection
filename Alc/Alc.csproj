@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <AssemblyName>RhubarbGeekNz.NpgsqlConnection.Alc</AssemblyName>
-    <Version>7.0.6</Version>
+    <Version>8.0.2</Version>
     <CertificateThumbprint>601A8B683F791E51F647D34AD102C38DA4DDB65F</CertificateThumbprint>
   </PropertyGroup>
 
